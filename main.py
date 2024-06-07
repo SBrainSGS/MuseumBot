@@ -41,7 +41,7 @@ async def scheduler():
             now = datetime.now().replace(second=0, microsecond=0)
             notify_time1 = (now + timedelta(minutes=19, seconds=30)).replace(microsecond=0)
             notify_time2 = (now + timedelta(minutes=20, seconds=30)).replace(microsecond=0)
-            cursor.execute("SELECT * FROM tickets")
+            cursor.execute("SELECT * FROM tickets WHERE exhibition_date BETWEEN %s and %s", (notify_time1, notify_time2))
             tickets = cursor.fetchall()
             for ticket in tickets:
                 cursor.execute("SELECT chat_id FROM users WHERE id = %s", (ticket['user_id'],))
